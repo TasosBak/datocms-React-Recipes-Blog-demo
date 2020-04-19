@@ -16,6 +16,7 @@ const Recipe = (props) => {
           slug: props.match.params.slug,
         };
         const result = await client.request(query, variables);
+        console.log(result.recipe);
         setRecipe(result.recipe);
         setIsFetching(false);
       } catch (error) {
@@ -38,7 +39,8 @@ const Recipe = (props) => {
             <strong>
               By <Link to={"/about"}>{recipe.author.name}</Link>
             </strong>
-            {recipe.youtubeVideo != null} && (
+
+            {/* {recipe.youtubeVideo != null} && (
             <Iframe
               url={recipe.youtubeVideo.url}
               width="450px"
@@ -47,7 +49,8 @@ const Recipe = (props) => {
               display="initial"
               position="relative"
             />
-            )
+            ) */}
+
             <Markdown
               source={recipe.abstract}
               escapeHtml={false}
