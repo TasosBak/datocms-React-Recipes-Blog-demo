@@ -1,33 +1,31 @@
 import React, { useEffect, useState } from "react";
 import client from "../client.js";
 import Markdown from "react-markdown";
-import { Image } from "react-datocms"
+import { Image } from "react-datocms";
 import { Link } from "react-router-dom";
+import Iframe from "react-iframe";
 
-const Recipe = props => {
+const Recipe = (props) => {
   const [recipe, setRecipe] = useState();
   const [isFetching, setIsFetching] = useState(false);
 
-  useEffect(
-    () => {
-      const fetchData = async () => {
-        try {
-          const variables = {
-            slug: props.match.params.slug
-          };
-          const result = await client.request(query, variables);
-          setRecipe(result.recipe);
-          setIsFetching(false);
-        } catch (error) {
-          console.error(JSON.stringify(error, undefined, 2));
-          setIsFetching(false);
-        }
-      };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const variables = {
+          slug: props.match.params.slug,
+        };
+        const result = await client.request(query, variables);
+        setRecipe(result.recipe);
+        setIsFetching(false);
+      } catch (error) {
+        console.error(JSON.stringify(error, undefined, 2));
+        setIsFetching(false);
+      }
+    };
 
-      fetchData();
-    },
-    [props.match.params.slug]
-  );
+    fetchData();
+  }, [props.match.params.slug]);
 
   return (
     <section>
@@ -40,6 +38,16 @@ const Recipe = props => {
             <strong>
               By <Link to={"/about"}>{recipe.author.name}</Link>
             </strong>
+            {recipe.youtubeVideo != null} && (
+            <Iframe
+              url={recipe.youtubeVideo.url}
+              width="450px"
+              height="450px"
+              id="myId"
+              display="initial"
+              position="relative"
+            />
+            )
             <Markdown
               source={recipe.abstract}
               escapeHtml={false}
